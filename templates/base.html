@@ -7,7 +7,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        {% render_bundle "vendor" "css" %}
+        {% render_bundle "vendor~app" "css" %}
         {% render_bundle "app" "css" %}
 
         <meta name="theme-color" content="#fafafa">
@@ -24,7 +24,7 @@
             {% endblock content %}
           </main>
         </body>
-        {% render_bundle "vendor" "js" %}
+        {% render_bundle "vendor~app" "js" %}
         {% render_bundle "app" "js" %}
     </body>
 </html>

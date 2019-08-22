@@ -1,6 +1,6 @@
 import barba from '@barba/core';
+import '@/sass/index.sass';
 
-console.log('hello world');
 
 // dummy example to illustrate rules and hooks
 barba.init({

@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "HOT_RELOAD=1 webpack-dev-server --mode development",
+    "start": "webpack-dev-server --mode development --hot",
     "build": "NODE_ENV=production webpack --mode production"
   },
   "devDependencies": {

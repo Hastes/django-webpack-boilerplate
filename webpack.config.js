@@ -12,7 +12,6 @@ const SentryCliPlugin = require('@sentry/webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const devMode = process.env.NODE_ENV !== 'production';
-const hotReload = process.env.HOT_RELOAD === '1';
 
 
 const styleRule = {
@@ -83,7 +82,7 @@ module.exports = {
   output: {
     path: path.resolve('./static/dist/'),
     filename: '[name]-[hash].js',
-    publicPath: hotReload ? 'http://localhost:8080/' : ''
+    publicPath: devMode ? 'http://localhost:8080/' : ''
   },
   devtool: devMode ? 'cheap-eval-source-map' : 'source-map',
   devServer: {
@@ -110,7 +109,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      static: path.resolve('./static'),
+      '@': path.resolve('./src'),
     }
   }
 };
