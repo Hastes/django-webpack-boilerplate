@@ -1,0 +1,67 @@
+version: "3"
+
+services:
+  
+  <NAME>_main:
+    image: <NAME>_ecotek_main
+    restart: always
+    command: python3 manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - postgres
+    volumes:
+      - <NAME>-main-static:/app/static
+      - <NAME>-main-media:/app/media
+    environment:
+      DEBUG: ${ECOTEK_DEBUG}
+      SECRET_KEY: ${ECOTEK_SECRET_KEY}
+      POSTGRES_DB_HOST: ${ECOTEK_DB_HOST}
+      POSTGRES_DB_PORT: ${ECOTEK_DB_PORT}
+      POSTGRES_DB_USER: ${ECOTEK_DB_USER}
+      POSTGRES_DB_PASS: ${ECOTEK_DB_PASS}
+      POSTGRES_DB_NAME: ${ECOTEK_DB_NAME}
+    networks:
+      private_network:
+        ipv4_address: 10.5.0.5
+
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      private_network:
+        ipv4_address: 10.5.0.6
+
+  nginx:
+    build: ./nginx
+    restart: always
+    ports:
+      - 8000:8000
+    volumes:
+      - <NAME>-main-static:/ecotek/ecotek-main/static
+      - <NAME>-main-media:/ecotek/ecotek-main/media
+    networks:
+      private_network:
+        ipv4_address: 10.5.0.7
+      default:
+
+volumes:
+  <NAME>-main-static:
+    external:
+      name: <NAME>-main-static
+  <NAME>-main-media:
+    external:
+      name: <NAME>-main-media
+  postgres-data:
+    external:
+      name: postgres-data
+
+networks:
+  private_network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.5.0.0/16
+

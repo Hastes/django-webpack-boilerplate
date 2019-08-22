@@ -1,0 +1,30 @@
+{% load render_bundle from webpack_loader %}
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        {% render_bundle "vendor" "css" %}
+        {% render_bundle "app" "css" %}
+
+        <meta name="theme-color" content="#fafafa">
+    </head>
+
+    <body>
+          <!--[if IE]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+          <![endif]-->
+
+        <body data-barba="wrapper">
+          <main data-barba="container" data-barba-namespace="home">
+            {% block content %}
+            {% endblock content %}
+          </main>
+        </body>
+        {% render_bundle "vendor" "js" %}
+        {% render_bundle "app" "js" %}
+    </body>
+</html>
