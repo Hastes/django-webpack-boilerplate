@@ -104,7 +104,14 @@ module.exports = {
       new OptimizeCSSAssetsPlugin({})
     ],
     splitChunks: {
-      chunks: 'all'
+      cacheGroups: {
+        vendor: {
+          test: /node_modules/,
+          chunks: "initial",
+          name: "vendor",
+          enforce: true
+        }
+    }
     }
   },
   resolve: {

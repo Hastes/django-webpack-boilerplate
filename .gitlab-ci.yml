@@ -1,6 +1,6 @@
 variables:
-  NAMESPACE: <NAME>
-  SOURCE_NAME: <NAME>_main
+  NAMESPACE: {{ project_name }}
+  SOURCE_NAME: {{ project_name }}_main
   DEPLOY_PATH: docker-compose.yml
   DJANGO_SETTINGS_MODULE: <NAME>.settings
 
