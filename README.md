@@ -1,1 +1,1 @@
-django-admin startproject --template=https://github.com/russell310/myproject/archive/master.zip project_name
+django-admin startproject --template=https://github.com/Hastes/django_webpack_boilerplate/archive/master.zip project_name
