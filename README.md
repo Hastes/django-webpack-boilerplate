@@ -10,3 +10,5 @@ Run bellow command from your terminal
 2. `npm install` or `yarn install`
 3. `npm run start`
 4. `python manage.py runserver`
+
+##### At all deploy configuration files you need replace `{{ project_name }}` on your own project name
