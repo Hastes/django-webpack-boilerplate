@@ -13,7 +13,6 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const devMode = process.env.NODE_ENV !== 'production';
 
-
 const styleRule = {
   test: /\.(sa|sc|c)ss$/,
   use: [
@@ -32,8 +31,17 @@ const jsRule = {
 };
 
 const assetRule = {
-  test: /.(jpg|png|woff(2)?|eot|ttf|svg)$/,
-  loader: 'file-loader'
+  test: /\.(jpg|png|woff(2)?|eot|ttf|svg|otf)$/,
+  use: [
+    {
+      loader: 'file-loader',
+      options: {
+        name: '[name].[hash].[ext]',
+        publicPath: './bundle',
+        outputPath: './bundle',
+      }
+    }
+  ]
 };
 
 const plugins = [
@@ -44,7 +52,7 @@ const plugins = [
     'jQuery': 'jquery',
     '$': 'jquery'
   }),
-  new BundleTracker({ filename: devMode ? './webpack-stats.json' : './webpack-stats-prod.json' }),
+  new BundleTracker({ filename: devMode ? './webpack-stats.json' : './bundle/webpack-stats-prod.json' }),
   new MiniCssExtractPlugin({
     filename: devMode ? '[name].css' : '[name].[hash].css',
     chunkFilename: devMode ? '[id].css' : '[id].[hash].css'
@@ -53,7 +61,7 @@ const plugins = [
   new webpack.HotModuleReplacementPlugin(),
   new CleanWebpackPlugin(),
   new CopyWebpackPlugin([
-    { from: './src/images/**/*', to: path.resolve('./static/dist/images/[name].[ext]'), toType: 'template' }
+    { from: './src/images/**/*', to: path.resolve('./bundle/images/[name].[ext]'), toType: 'template' }
   ])
 ];
 
@@ -80,9 +88,9 @@ module.exports = {
     app: './src/js/index.js',
   },
   output: {
-    path: path.resolve('./static/dist/'),
+    path: path.resolve('./bundle'),
     filename: '[name]-[hash].js',
-    publicPath: devMode ? 'http://localhost:8080/' : ''
+    publicPath: devMode ? 'http://localhost:8080/' : '/bundle/',
   },
   devtool: devMode ? 'cheap-eval-source-map' : 'source-map',
   devServer: {
@@ -111,8 +119,8 @@ module.exports = {
           name: "vendor",
           enforce: true
         }
-    }
-    }
+      }
+    },
   },
   resolve: {
     alias: {
