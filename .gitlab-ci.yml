@@ -1,29 +1,32 @@
 variables:
   NAMESPACE: {{ project_name }}
   SOURCE_NAME: {{ project_name }}_main
-  DEPLOY_PATH: docker-compose.yml
-  DJANGO_SETTINGS_MODULE: <NAME>.settings
+  DEPLOY_PATH: /webapps/docker-compose.yml
+  REGISTRY_NAME: $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME
+  DJANGO_SETTINGS_MODULE: technoplus.settings_prod
+
 
 stages:
   - build
   - deploy
+
 
 build:
   stage: build
   script:
     - docker build -f ./Dockerfile -t "${NAMESPACE}_${SOURCE_NAME}" .
   only:
-    - develop
+    - master
 
 deploy:
   stage: deploy
   script:
-    - cd /ecotek
     - docker-compose -f $DEPLOY_PATH stop $SOURCE_NAME
     - docker-compose -f $DEPLOY_PATH rm -f $SOURCE_NAME
+    - docker-compose -f $DEPLOY_PATH run --rm $SOURCE_NAME sh -c "npm install && npm run build"
     - docker-compose -f $DEPLOY_PATH run --rm $SOURCE_NAME python3 manage.py migrate
     - docker-compose -f $DEPLOY_PATH run --rm $SOURCE_NAME python3 manage.py collectstatic --noinput
     - docker-compose -f $DEPLOY_PATH up -d $SOURCE_NAME
   only:
-    - develop
+    - master
 
