@@ -3,7 +3,7 @@ variables:
   SOURCE_NAME: {{ project_name }}_main
   DEPLOY_PATH: /webapps/docker-compose.yml
   REGISTRY_NAME: $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME
-  DJANGO_SETTINGS_MODULE: technoplus.settings_prod
+  DJANGO_SETTINGS_MODULE: {{ project_name }}.settings_prod
 
 
 stages:
