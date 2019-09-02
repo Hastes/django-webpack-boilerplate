@@ -20,6 +20,10 @@ RUN apk add --update --no-cache libmagic jpeg-dev zlib-dev libstdc++
 
 RUN apk add --update libffi-dev libxslt-dev libxml2-dev openssl-dev python3-dev freetype-dev libjpeg-turbo-dev libpng-dev
 
+# install nodejs for bundle
+RUN apk add --update nodejs nodejs-npm
+
+
 RUN pip3 install pipenv
 RUN pip3 install gunicorn meinheld
 
@@ -30,4 +34,3 @@ RUN pip install -r requirements.txt
 ADD . .
 
 EXPOSE 8000
-
