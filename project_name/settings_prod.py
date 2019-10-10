@@ -3,9 +3,9 @@ from .settings import *
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get("POSTGRES_DB_NAME", {{ project_name }}),
-        'USER': os.environ.get("POSTGRES_DB_USER", {{ project_name }}),
-        'PASSWORD': os.environ.get("POSTGRES_DB_PASS", {{ project_name }}),
+        'NAME': os.environ.get("POSTGRES_DB_NAME", "{{ project_name }}"),
+        'USER': os.environ.get("POSTGRES_DB_USER", "{{ project_name }}"),
+        'PASSWORD': os.environ.get("POSTGRES_DB_PASS", "{{ project_name }}"),
         'HOST': os.environ.get("POSTGRES_DB_HOST", "localhost"),
         'PORT': os.environ.get("POSTGRES_DB_PORT", 5432),
     }
