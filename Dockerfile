@@ -24,12 +24,12 @@ RUN apk add --update libffi-dev libxslt-dev libxml2-dev openssl-dev python3-dev 
 RUN apk add --update nodejs nodejs-npm
 
 
-RUN pip3 install pipenv
-RUN pip3 install gunicorn meinheld
+RUN pip3 install pipenv gunicorn meinheld
 
-ADD ./requirements.txt .
+ADD ./Pipfile .
+ADD ./Pipfile.lock .
+RUN pipenv install --system --deploy --ignore-pipfile
 
-RUN pip install -r requirements.txt
 
 ADD . .
 
