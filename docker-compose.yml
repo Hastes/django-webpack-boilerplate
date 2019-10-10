@@ -3,14 +3,14 @@ version: "3"
 services:
 
   {{ project_name }}_main:
-    image: {{ project_name }}_ecotek_main
+    image: {{ project_name }}_{{ project_name }}_main
     restart: always
     command: python3 manage.py runserver 0.0.0.0:8000
     depends_on:
       - postgres
     volumes:
-      - {{ project_name }}-main-static:/app/static
-      - {{ project_name }}-main-media:/app/media
+      - {{ project_name }}-static:/app/static
+      - {{ project_name }}-media:/app/media
     environment:
       DEBUG: ${DEBUG}
       SECRET_KEY: ${SECRET_KEY}
@@ -34,16 +34,16 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - {{ project_name }}-main-static:/{{ project_name }}/static
-      - {{ project_name }}-main-media:/{{ project_name }}/media
+      - {{ project_name }}-static:/{{ project_name }}/static
+      - {{ project_name }}-media:/{{ project_name }}/media
 
 volumes:
   {{ project_name }}-static:
     external:
-      name: {{ project_name }}-main-static
+      name: {{ project_name }}-static
   {{ project_name }}-media:
     external:
-      name: {{ project_name }}-main-media
+      name: {{ project_name }}-media
   postgres-data:
     external:
       name: postgres-data
