@@ -2,7 +2,7 @@
 
 Run bellow command from your terminal
 
-`django-admin startproject --template=https://github.com/Hastes/django_webpack_boilerplate/archive/master.zip your_project_name`
+`django-admin startproject --template=https://github.com/Hastes/django-webpack-bp/archive/master.zip your_project_name`
 
 ## How to run
 
