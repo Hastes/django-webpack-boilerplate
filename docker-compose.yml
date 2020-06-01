@@ -4,10 +4,10 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.django.dev
     restart: on-failure
     environment:
-      - DJANGO_SETTINGS_MODULE=technoplus.settings
+      - DJANGO_SETTINGS_MODULE={{ project_name }}.settings
     command: python manage.py runserver 0.0.0.0:8000 --insecure
     volumes:
       - ./:/app
@@ -20,7 +20,7 @@ services:
   static_app:
     build:
       context: .
-      dockerfile: Dockerfilestatic.dev
+      dockerfile: Dockerfile.node.dev
     volumes:
       - ./src:/app/src
       - ./package.json:/app/package.json
