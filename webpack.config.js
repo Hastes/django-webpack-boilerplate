@@ -9,7 +9,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const devMode = process.env.NODE_ENV !== 'production';
 
@@ -46,13 +46,13 @@ const assetRule = {
 
 const plugins = [
   new webpack.ProvidePlugin({
+    $: 'jquery',
+    jQuery: 'jquery',
+    'window.jQuery': 'jquery',
     'window.Sentry': 'Sentry',
     'Sentry': 'Sentry',
-    'window.jQuery': 'jquery',
-    'jQuery': 'jquery',
-    '$': 'jquery'
   }),
-  new BundleTracker({ filename: devMode ? './webpack-stats.json' : './bundle/webpack-stats-prod.json' }),
+  new BundleTracker({ filename: devMode ? './src/webpack-stats.json' : './bundle/webpack-stats-prod.json' }),
   new MiniCssExtractPlugin({
     filename: devMode ? '[name].css' : '[name].[hash].css',
     chunkFilename: devMode ? '[id].css' : '[id].[hash].css'
@@ -90,21 +90,23 @@ module.exports = {
   output: {
     path: path.resolve('./bundle'),
     filename: '[name]-[hash].js',
-    publicPath: devMode ? 'http://localhost:8080/' : '/bundle/',
+    publicPath: devMode ? 'http://0.0.0.0:8080/' : '/bundle/',
   },
   devtool: devMode ? 'cheap-eval-source-map' : 'source-map',
   devServer: {
     hot: true,
     quiet: false,
     headers: { 'Access-Control-Allow-Origin': '*' },
-    port: 8080
+    host: '0.0.0.0',
+    port: 8080,
+    disableHostCheck: true,
   },
   module: { rules: [jsRule, styleRule, assetRule] },
   externals: { jquery: 'jQuery', Sentry: 'Sentry' },
   plugins,
   optimization: {
     minimizer: [
-      new UglifyJsPlugin({
+      new TerserPlugin({
         cache: true,
         parallel: true,
         sourceMap: true // set to true if you want JS source maps

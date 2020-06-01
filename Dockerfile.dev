@@ -1,0 +1,23 @@
+FROM python:3.5-alpine
+
+WORKDIR /app/
+
+RUN apk add --no-cache --virtual=build-dependencies wget build-base musl-dev python3-dev
+
+RUN echo "http://dl-3.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories
+RUN apk update
+
+RUN apk add --update --no-cache libmagic jpeg-dev zlib-dev libstdc++ gettext 
+
+RUN apk add --no-cache libffi-dev openssl-dev
+
+ADD ./requirements.dev .
+
+RUN pip3 install pipenv meinheld
+
+ADD ./Pipfile .
+ADD ./Pipfile.lock .
+RUN pipenv install --system --deploy --ignore-pipfile
+ADD . .
+
+EXPOSE 8000

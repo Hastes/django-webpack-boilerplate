@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+
+  {{ project_name }}_main:
+    image: {{ project_name }}_{{ project_name }}_main
+    restart: always
+    command: python3 manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - postgres
+    volumes:
+      - {{ project_name }}-static:/app/static
+      - {{ project_name }}-media:/app/media
+    environment:
+      DEBUG: ${DEBUG}
+      SECRET_KEY: ${SECRET_KEY}
+      POSTGRES_DB_HOST: ${DB_HOST}
+      POSTGRES_DB_PORT: ${DB_PORT}
+      POSTGRES_DB_USER: ${DB_USER}
+      POSTGRES_DB_PASS: ${DB_PASS}
+      POSTGRES_DB_NAME: ${DB_NAME}
+
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  nginx:
+    build: ./nginx
+    restart: always
+    ports:
+      - 8000:8000
+    volumes:
+      - {{ project_name }}-static:/{{ project_name }}/static
+      - {{ project_name }}-media:/{{ project_name }}/media
+
+volumes:
+  {{ project_name }}-static:
+    external:
+      name: {{ project_name }}-static
+  {{ project_name }}-media:
+    external:
+      name: {{ project_name }}-media
+  postgres-data:
+    external:
+      name: postgres-data
