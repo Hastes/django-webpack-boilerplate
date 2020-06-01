@@ -9,7 +9,7 @@ Run bellow command from your terminal
 ### Before run
 You need find & replace all `{{ project_name }}` entity in project to own (django-admin didn't replace it in .yml & Dockerfiles)
 
-### Run proejct
+### Run project
 1. `cd your_project_name/`
 2. `npm install` or `yarn install`
 3. `npm run start`
