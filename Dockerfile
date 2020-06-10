@@ -1,36 +1,23 @@
-FROM alpine:latest
+FROM python:3.7-alpine
 
 WORKDIR /app/
 
+
 RUN apk add --no-cache ca-certificates && update-ca-certificates
-RUN apk add --update --no-cache python3
 RUN apk add --update --no-cache postgresql-dev
 RUN apk add --no-cache --virtual=build-dependencies wget ca-certificates build-base python3-dev musl-dev
-RUN wget --no-check-certificate "https://bootstrap.pypa.io/get-pip.py" -O /dev/stdout | python3
 
 RUN echo "http://dl-3.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories
-RUN echo "ipv6" >> /etc/modules
-RUN echo "http://dl-2.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories; \
-    echo "http://dl-3.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories; \
-    echo "http://dl-4.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories; \
-    echo "http://dl-5.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
 RUN apk update
 
-RUN apk add --update --no-cache libmagic jpeg-dev zlib-dev libstdc++
+RUN apk add --update --no-cache libmagic jpeg-dev zlib-dev \
+    freetds freetds-dev unixodbc unixodbc-dev libstdc++
 
-RUN apk add --update libffi-dev libxslt-dev libxml2-dev openssl-dev python3-dev freetype-dev libjpeg-turbo-dev libpng-dev
-
-# install nodejs for bundle
-RUN apk add --update nodejs nodejs-npm
-
-
-RUN pip3 install pipenv gunicorn meinheld
+RUN pip3 install pipenv gunicorn meinheld 
 
 ADD ./Pipfile .
 ADD ./Pipfile.lock .
 RUN pipenv install --system --deploy --ignore-pipfile
-
-
 ADD . .
 
 EXPOSE 8000
